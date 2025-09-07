@@ -6,12 +6,6 @@ import { UIMessage, useChat } from "@ai-sdk/react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-interface Props {
-    params: {
-        id: string;
-    };
-}
-
 function ChatPage() {
     const [messagesFromDb, setMessagesFromDb] = useState<UIMessage[]>();
     const { id }: { id: string } = useParams();
@@ -24,7 +18,7 @@ function ChatPage() {
                 setMessagesFromDb(data.messages);
             })
             .catch((err) => console.log("error from chat", err));
-    }, []);
+    }, [id]);
 
     return (
         <div className="flex flex-col justify-between h-screen pt-15 pb-5 overflow-hidden">
@@ -55,12 +49,7 @@ function ChatPage() {
                     )}
                 </div>
             </div>
-            <ChatInput
-                id={id}
-                sendMessage={sendMessage}
-                status={status}
-                stop={stop}
-            />
+            <ChatInput sendMessage={sendMessage} status={status} stop={stop} />
         </div>
     );
 }

@@ -2,33 +2,33 @@
 import React, { useState } from "react";
 import { ImArrowUpRight2 } from "react-icons/im";
 import { BsPlusLg } from "react-icons/bs";
-import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
-// import { useChat, useCompletion } from "@ai-sdk/react";
 import { FaSquare } from "react-icons/fa";
+import { ChatRequestOptions } from "ai";
+
+type SendMessage = (
+    message?: {
+        text: string;
+        id?: string;
+        role?: "system" | "user" | "assistant";
+    },
+    options?: ChatRequestOptions
+) => Promise<void>;
 
 function ChatInput({
-    id,
     sendMessage,
     status,
     stop,
 }: {
-    id?: string;
-    sendMessage?: any;
+    sendMessage: SendMessage;
     status?: string;
-    stop?: any;
+    stop?: () => void;
 }) {
     const [prompt, setPrompt] = useState("");
-    const router = useRouter();
-    const userObj = useUser();
-
-    // const { sendMessage, status, stop } = useChat();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         sendMessage({ text: prompt });
         setPrompt("");
-        // router.push(`/chat/${id}`);
     };
 
     return (

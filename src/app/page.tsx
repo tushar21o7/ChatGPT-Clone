@@ -3,17 +3,9 @@
 import ChatInput from "@/components/ChatInput";
 import Message from "@/components/Message";
 import { useChat } from "@ai-sdk/react";
-import { useParams } from "next/navigation";
 import React from "react";
 
-interface Props {
-    params: {
-        id: string;
-    };
-}
-
 function ChatPage() {
-    const { id }: { id: string } = useParams();
     const { messages, error, sendMessage, status, stop } = useChat();
 
     return (

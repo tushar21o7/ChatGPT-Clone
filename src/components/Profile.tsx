@@ -1,9 +1,8 @@
 import { SignOutButton, UserButton } from "@clerk/nextjs";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
 
 async function Profile() {
-    const authObj = await auth();
     const userObj = await currentUser();
 
     return (

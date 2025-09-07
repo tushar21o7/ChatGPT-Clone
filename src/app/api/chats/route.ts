@@ -3,7 +3,7 @@ import ChatModel from "@/models/ChatModel";
 import dbConnect from "@/lib/dbConnect";
 import { auth } from "@clerk/nextjs/server";
 
-export async function GET(req: Request) {
+export async function GET() {
     const { userId } = await auth();
     try {
         const chats = await ChatModel.find({ user: userId });
@@ -16,7 +16,7 @@ export async function GET(req: Request) {
     }
 }
 
-export async function POST(req: Request) {
+export async function POST() {
     const { userId } = await auth();
 
     await dbConnect();
