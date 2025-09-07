@@ -2,9 +2,10 @@
 
 import ChatInput from "@/components/ChatInput";
 import Message from "@/components/Message";
-import { useChat } from "@ai-sdk/react";
+import { UIMessage, useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
     params: {
@@ -12,12 +13,18 @@ interface Props {
     };
 }
 
-function ChatPage() {
+function Chat({ initialMessages }: { initialMessages: UIMessage[] }) {
+    // const [initialMessages, setInitialMessages] = useState<UIMessage[]>();
     const { id }: { id: string } = useParams();
+
     const { messages, error, sendMessage, status, stop } = useChat();
 
+    useEffect(() => {
+        // sendMessage({initialMessages})
+    }, []);
+
     return (
-        <div className="flex flex-col justify-between h-[100%] pt-15 pb-5 overflow-hidden">
+        <div className="flex flex-col justify-center h-[100%] pt-15 pb-5 overflow-hidden">
             <div className="overflow-y-scroll pl-8 scrollbar">
                 <div className="flex-1 mx-auto max-w-3xl overflow-hidden items-center pt-10">
                     {error && (
@@ -43,9 +50,14 @@ function ChatPage() {
                     ))}
                 </div>
             </div>
-            <ChatInput sendMessage={sendMessage} status={status} stop={stop} />
+            <ChatInput
+                id={id}
+                sendMessage={sendMessage}
+                status={status}
+                stop={stop}
+            />
         </div>
     );
 }
 
-export default ChatPage;
+export default Chat;
