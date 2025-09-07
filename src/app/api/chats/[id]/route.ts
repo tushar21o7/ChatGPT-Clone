@@ -1,25 +1,7 @@
 import ChatModel from "@/models/ChatModel";
-import { NextResponse } from "next/server";
 import { UIMessage, streamText, convertToModelMessages } from "ai";
 import { google } from "@ai-sdk/google";
 import mongoose from "mongoose";
-
-export async function GET(
-    req: Request,
-    { params }: { params: { id: string } }
-) {
-    const { id } = params;
-
-    try {
-        const chat = await ChatModel.findById(id);
-        return NextResponse.json({ messages: chat?.messages });
-    } catch (error) {
-        console.error("Error: ", error);
-        return new Response("Error while getting chat", {
-            status: 500,
-        });
-    }
-}
 
 export async function POST(
     req: Request,
