@@ -16,8 +16,9 @@ function NewChat() {
         }
 
         try {
-            const resp = await fetch("/api/chats", {
+            const resp = await fetch("/api/chat", {
                 method: "POST",
+                body: JSON.stringify({}),
             });
             const data = await resp.json();
             router.push(`/chat/${data.chatId}`);

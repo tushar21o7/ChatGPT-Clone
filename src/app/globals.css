@@ -47,3 +47,55 @@ body {
 .scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: #9ca3af; /* gray-400 */
 }
+
+.markdown {
+    @apply leading-relaxed text-gray-200;
+
+    p {
+        @apply my-3;
+    }
+
+    h1 {
+        @apply text-3xl font-bold my-5;
+    }
+
+    h2 {
+        @apply text-2xl font-semibold my-5;
+    }
+
+    h3 {
+        @apply text-xl font-semibold my-2;
+    }
+
+    ul {
+        @apply list-disc list-outside pl-6 mt-2 mb-4;
+    }
+
+    ol {
+        @apply list-decimal list-outside pl-6 my-2;
+    }
+
+    li {
+        @apply list-outside my-2;
+    }
+
+    a {
+        @apply text-blue-400 underline hover:text-blue-300;
+    }
+
+    code {
+        @apply bg-white/10 px-1 py-0.5 rounded font-mono text-sm;
+    }
+
+    pre div pre {
+        @apply bg-white;
+    }
+
+    blockquote {
+        @apply border-l-4 border-gray-600 pl-4 italic text-gray-400 my-4;
+    }
+}
+
+.markdown pre > code {
+    @apply block bg-transparent text-sm leading-relaxed;
+}

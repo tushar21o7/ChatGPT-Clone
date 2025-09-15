@@ -1,12 +1,11 @@
 "use client";
 
 import ChatInput from "@/components/ChatInput";
-import Message from "@/components/Message";
 import { useChat } from "@ai-sdk/react";
 import React from "react";
 
 function Chat() {
-    const { messages, error, sendMessage, status, stop } = useChat();
+    const { error, sendMessage, status, stop } = useChat();
 
     return (
         <div className="flex flex-col justify-center h-[100%] pt-15 pb-5 overflow-hidden">
@@ -15,7 +14,7 @@ function Chat() {
                     {error && (
                         <div className="text-red-500 mb-4">{error.message}</div>
                     )}
-                    {messages?.map((message) => (
+                    {/* {messages?.map((message) => (
                         <div key={message.id} className="">
                             {message.parts.map((part, index) => {
                                 switch (part.type) {
@@ -32,7 +31,7 @@ function Chat() {
                                 }
                             })}
                         </div>
-                    ))}
+                    ))} */}
                 </div>
             </div>
             <ChatInput sendMessage={sendMessage} status={status} stop={stop} />
