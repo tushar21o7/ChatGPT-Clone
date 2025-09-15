@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ImArrowUpRight2 } from "react-icons/im";
 import { BsPlusLg } from "react-icons/bs";
 import { FaSquare } from "react-icons/fa";
@@ -8,6 +8,7 @@ import { ChatRequestOptions } from "ai";
 type SendMessage = (
     message?: {
         text: string;
+        files: FileList | undefined;
         id?: string;
         role?: "system" | "user" | "assistant";
     },
@@ -24,20 +25,40 @@ function ChatInput({
     stop?: () => void;
 }) {
     const [prompt, setPrompt] = useState("");
+    const [files, setFiles] = useState<FileList | undefined>(undefined);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        sendMessage({ text: prompt });
+        sendMessage({ text: prompt, files });
         setPrompt("");
+        setFiles(undefined);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
     return (
-        <div className="w-full flex flex-col items-center justify-center max-w-3xl mx-auto pt-3 px-4">
+        <div className="w-full flex flex-col items-center justify-center max-w-3xl mx-auto px-5">
             <form
                 onSubmit={handleSubmit}
                 className="bg-white/10 rounded-full flex items-center px-3 py-2.5 w-full"
             >
-                <BsPlusLg className="text-4xl text-white cursor-pointer hover:bg-white/10 rounded-full p-2" />
+                <label htmlFor="file-upload">
+                    <BsPlusLg className="text-4xl text-white cursor-pointer hover:bg-white/10 rounded-full p-2" />
+                    <input
+                        id="file-upload"
+                        type="file"
+                        className="hidden"
+                        onChange={(event) => {
+                            if (event.target.files) {
+                                setFiles(event.target.files);
+                            }
+                        }}
+                        multiple
+                        ref={fileInputRef}
+                    />
+                </label>
 
                 <input
                     type="text"
@@ -55,7 +76,7 @@ function ChatInput({
                     </button>
                 ) : (
                     <button
-                        disabled={!prompt}
+                        disabled={!prompt && !files}
                         className="p-2.5 rounded-full text-black bg-white disabled:bg-white/30 cursor-pointer"
                     >
                         <ImArrowUpRight2 className="-rotate-45 text-black/80" />

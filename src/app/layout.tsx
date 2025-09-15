@@ -33,13 +33,8 @@ export default function RootLayout({
                     className={`${geistSans.variable} ${geistMono.variable} antialiased`}
                 >
                     <div className="flex">
-                        <div
-                            className="bg-black/90 text-gray-200 max-w-[250px] h-screen overflow-y-auto md:min-w-[15rem]"
-                            style={{ width: "300px" }}
-                        >
-                            <Sidebar />
-                        </div>
-                        <div className="bg-[#212121] flex-1 h-screen overflow-hidden relative text-gray-200">
+                        <Sidebar />
+                        <div className="bg-[#212121] pt-5 flex-1 h-screen overflow-hidden relative text-gray-200">
                             <Header />
                             {children}
                         </div>

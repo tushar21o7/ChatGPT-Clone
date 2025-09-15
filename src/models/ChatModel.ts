@@ -3,11 +3,13 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 export interface Part {
     type: "text" | "step-start";
     text?: string;
+    providerMetadata?: string;
     state?: string;
 }
 
 export interface Message {
     id: string;
+    metadata?: string;
     role: "user" | "assistant";
     parts: Part[];
 }
@@ -27,8 +29,9 @@ const PartSchema = new Schema<Part>(
             enum: ["text", "step-start"],
             required: true,
         },
-        text: String,
-        state: String,
+        text: { type: String },
+        providerMetadata: { type: String },
+        state: { type: String },
     },
     { _id: false }
 );
@@ -36,12 +39,13 @@ const PartSchema = new Schema<Part>(
 const MessageSchema = new Schema<Message>(
     {
         id: { type: String, required: true },
+        metadata: { type: String },
         role: {
             type: String,
             enum: ["user", "assistant"],
             required: true,
         },
-        parts: { type: [PartSchema], required: true },
+        parts: { type: [PartSchema] },
     },
     { _id: false }
 );
