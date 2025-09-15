@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { RefObject, useRef, useState } from "react";
 import { ImArrowUpRight2 } from "react-icons/im";
 import { BsPlusLg } from "react-icons/bs";
 import { FaSquare } from "react-icons/fa";
@@ -19,10 +19,12 @@ function ChatInput({
     sendMessage,
     status,
     stop,
+    endRef,
 }: {
     sendMessage: SendMessage;
     status?: string;
     stop?: () => void;
+    endRef?: RefObject<HTMLDivElement | null>;
 }) {
     const [prompt, setPrompt] = useState("");
     const [files, setFiles] = useState<FileList | undefined>(undefined);
@@ -30,6 +32,10 @@ function ChatInput({
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setTimeout(
+            () => endRef?.current?.scrollIntoView({ behavior: "smooth" }),
+            1000
+        );
         sendMessage({ text: prompt, files });
         setPrompt("");
         setFiles(undefined);
@@ -44,21 +50,42 @@ function ChatInput({
                 onSubmit={handleSubmit}
                 className="bg-white/10 rounded-full flex items-center px-3 py-2.5 w-full"
             >
-                <label htmlFor="file-upload">
-                    <BsPlusLg className="text-4xl text-white cursor-pointer hover:bg-white/10 rounded-full p-2" />
-                    <input
-                        id="file-upload"
-                        type="file"
-                        className="hidden"
-                        onChange={(event) => {
-                            if (event.target.files) {
-                                setFiles(event.target.files);
-                            }
-                        }}
-                        multiple
-                        ref={fileInputRef}
-                    />
-                </label>
+                {!files?.length ? (
+                    <label htmlFor="file-upload">
+                        <BsPlusLg className="text-4xl text-white cursor-pointer hover:bg-white/10 rounded-full p-2" />
+                        <input
+                            id="file-upload"
+                            type="file"
+                            className="hidden"
+                            onChange={(event) => {
+                                if (event.target.files) {
+                                    setFiles(event.target.files);
+                                }
+                            }}
+                            multiple
+                            ref={fileInputRef}
+                        />
+                    </label>
+                ) : (
+                    <div
+                        className="text-4xl text-white cursor-pointer hover:bg-white/10 rounded-full p-2"
+                        title={files[0].name}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
+                        </svg>
+                    </div>
+                )}
 
                 <input
                     type="text"

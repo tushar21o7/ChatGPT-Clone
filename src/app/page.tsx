@@ -24,8 +24,8 @@ function ChatPage() {
     };
 
     useEffect(() => {
-        endRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
+        endRef.current?.scrollIntoView({ behavior: "auto" });
+    }, []);
 
     return (
         <div
@@ -36,7 +36,11 @@ function ChatPage() {
             }  h-[100%] pt-15 overflow-hidden`}
         >
             {!messages.length && <div></div>}
-            <div className="overflow-y-scroll scrollbar">
+            <div
+                className={`overflow-y-scroll scrollbar ${
+                    messages.length && "pb-[80px]"
+                }`}
+            >
                 <div className="px-5 flex-1 mx-auto max-w-3xl overflow-hidden items-center pt-10">
                     {messages.length ? (
                         messages?.map((message) => (
@@ -111,9 +115,13 @@ function ChatPage() {
                             ChatGPT
                         </div>
                     )}
+                    {(status === "submitted" || status === "streaming") && (
+                        <div className="animate-pulse bg-white h-3 w-3 rounded-full"></div>
+                    )}
                     {error && (
                         <div className="text-red-500 mb-4">{error.message}</div>
                     )}
+                    <div ref={endRef}></div>
                 </div>
             </div>
             <div className="flex flex-col gap-2 pb-2">
@@ -121,6 +129,7 @@ function ChatPage() {
                     sendMessage={sendMessage}
                     status={status}
                     stop={stop}
+                    endRef={endRef}
                 />
                 <span
                     className={`${

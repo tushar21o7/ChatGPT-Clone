@@ -18,7 +18,7 @@ export const MarkdownResponse: React.FC<MarkdownResponseProps> = ({
     copied,
 }) => {
     return (
-        <article className="prose markdown">
+        <article className="prose markdown mb-[60px]">
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
