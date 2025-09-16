@@ -50,32 +50,39 @@ function ChatList() {
             {chats &&
                 chats?.map((chat) => (
                     <div key={chat._id} className="flex flex-col">
-                        {!isEditing ? (
+                        {!(isEditing && activeChatMenuId === chat._id) ? (
                             <Link
                                 key={chat._id}
                                 href={`/chat/${chat._id}`}
-                                className="group flex items-center text-sm px-2 py-2 ml-1.5 mr-3 rounded-lg justify-between hover:bg-[#2f2f2f] cursor-pointer"
+                                className={`group flex items-center text-sm px-2 py-2 ml-1.5 mr-3 rounded-lg justify-between hover:bg-[#2f2f2f] ${
+                                    chat._id === params.id && "bg-[#2f2f2f]"
+                                }  cursor-pointer`}
                             >
                                 <span>{chat.title}</span>{" "}
                                 <BsThreeDots
-                                    className="invisible group-hover:visible"
-                                    onClick={() =>
-                                        setActiveChatMenuId(chat._id)
-                                    }
+                                    className="md:invisible md:group-hover:visible"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setActiveChatMenuId(chat._id);
+                                    }}
                                 />
                                 {activeChatMenuId === chat._id && (
-                                    <div className="absolute left-[200px] mt-2 w-fit origin-top-right bg-gray-500 rounded-xl shadow-lg z-50 flex flex-col gap-2 px-5 py-3">
-                                        <button>Share</button>
+                                    <div className="absolute left-[250px] p-1 mt-2 w-fit origin-top-right bg-[#373636] rounded-xl shadow-lg z-50 flex flex-col gap-2">
                                         <button
-                                            onClick={() => setIsEditing(true)}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setIsEditing(true);
+                                                setActiveChatMenuId(chat._id);
+                                            }}
+                                            className="cursor-pointer text-white hover:bg-[#4f4f4f] px-5 py-2 rounded-xl"
                                         >
                                             Rename
                                         </button>
-                                        <button>Archive</button>
                                         <button
                                             onClick={() =>
                                                 handleDelete(chat._id)
                                             }
+                                            className="cursor-pointer text-white hover:bg-[#4f4f4f] px-5 py-2 rounded-xl"
                                         >
                                             Delete
                                         </button>
@@ -87,7 +94,11 @@ function ChatList() {
                                 key={chat._id}
                                 id={chat._id}
                                 value={chat.title}
-                                setIsEditing={() => setIsEditing}
+                                setIsEditing={setIsEditing}
+                                activeChatMenuId={activeChatMenuId}
+                                setActiveChatMenuId={setActiveChatMenuId}
+                                chats={chats}
+                                setChats={setChats}
                             />
                         )}
                     </div>

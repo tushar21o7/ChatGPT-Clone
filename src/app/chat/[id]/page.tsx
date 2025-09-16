@@ -56,7 +56,7 @@ function ChatPage() {
     return (
         <div
             className={`flex flex-col ${
-                messages.length
+                messages.length || id
                     ? "justify-between"
                     : "justify-between sm:justify-center sm:gap-8"
             }  h-[100%] pt-15 overflow-hidden`}
@@ -138,7 +138,7 @@ function ChatPage() {
                         ))
                     ) : (
                         <div className="text-center text-3xl whitespace-pre-wrap">
-                            ChatGPT
+                            {/* ChatGPT */}
                         </div>
                     )}
                     {(status === "submitted" || status === "streaming") && (
