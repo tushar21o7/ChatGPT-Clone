@@ -31,7 +31,7 @@ function Sidebar() {
                 />
             )}
             {open ? (
-                <div className="fixed top-0 left-0 z-50 lg:static flex flex-col gap-5 py-3 h-screen bg-black/90 text-gray-200 w-[60%] lg:max-w-[300px] h-screen overflow-y-auto md:min-w-[15rem]">
+                <div className="fixed top-0 left-0 z-50 lg:static flex flex-col gap-5 py-3 h-screen bg-[#191919] text-gray-200 w-[60%] lg:max-w-[300px] h-screen overflow-y-auto md:min-w-[15rem]">
                     <div className="flex justify-between px-2">
                         <Link href={"/"} className="w-fit">
                             <Image
@@ -59,7 +59,7 @@ function Sidebar() {
                 </div>
             ) : (
                 <div onClick={() => setOpen(true)}>
-                    <div className="rounded-lg py-1 px-2 ml-3 mt-5 hover:bg-[#2f2f2f] bg-[#212121]">
+                    <div className="rounded-lg py-1 px-2 ml-1 mt-5 hover:bg-[#2f2f2f] bg-[#212121]">
                         <RxHamburgerMenu />
                     </div>
                 </div>

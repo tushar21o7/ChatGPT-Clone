@@ -21,6 +21,7 @@ export async function POST(req: Request) {
         const { userId } = await auth();
 
         if (userId) {
+            console.log("user", userId);
             await connectDB();
             if (!chatId) {
                 const newChat = await ChatModel.create({
@@ -28,6 +29,15 @@ export async function POST(req: Request) {
                     user: userId,
                 });
                 return NextResponse.json({ chatId: newChat._id });
+            } else {
+                const chatExists = await ChatModel.findById(chatId);
+                if (!chatExists) {
+                    await ChatModel.create({
+                        _id: chatId,
+                        title: "New chat",
+                        user: userId,
+                    });
+                }
             }
         }
 
@@ -35,9 +45,11 @@ export async function POST(req: Request) {
         // const trimmedMessages = await trimMessages(messages);
         const trimmedMessages = messages;
 
-        const model = userId
-            ? mem0(modelName, { user_id: userId })
-            : google(modelName);
+        // const model = userId
+        //     ? mem0(modelName, { user_id: userId })
+        //     : google(modelName);
+
+        const model = google(modelName);
 
         const result = streamText({
             model,

@@ -3,13 +3,36 @@
 import ChatInput from "@/components/ChatInput";
 import Message from "@/components/Message";
 import { useChat } from "@ai-sdk/react";
+import { useUser } from "@clerk/nextjs";
+import { DefaultChatTransport } from "ai";
+import mongoose from "mongoose";
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 
 function ChatPage() {
-    const { messages, setMessages, error, sendMessage, status, stop } =
-        useChat();
+    const { id }: { id: string } = useParams();
+    const router = useRouter();
+    const { user } = useUser();
+    const [chatId, setChatId] = useState(id ?? new mongoose.Types.ObjectId());
     const endRef = useRef<HTMLDivElement | null>(null);
+
+    const { messages, setMessages, error, sendMessage, status, stop } = useChat(
+        {
+            id: "my-chat",
+            transport: new DefaultChatTransport({
+                prepareSendMessagesRequest: ({ id, messages }) => {
+                    return {
+                        body: { chatId, messages },
+                    };
+                },
+            }),
+            onFinish: () => {
+                if (user?.id && id !== chatId) router.push(`/chat/${chatId}`);
+            },
+        }
+    );
 
     const handleSave = (messageId: string, newMessage: string) => {
         const newMessageArray = [];
@@ -24,8 +47,8 @@ function ChatPage() {
     };
 
     useEffect(() => {
-        endRef.current?.scrollIntoView({ behavior: "auto" });
-    }, []);
+        endRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
     return (
         <div
