@@ -45,11 +45,9 @@ export async function POST(req: Request) {
         // const trimmedMessages = await trimMessages(messages);
         const trimmedMessages = messages;
 
-        // const model = userId
-        //     ? mem0(modelName, { user_id: userId })
-        //     : google(modelName);
-
-        const model = google(modelName);
+        const model = userId
+            ? mem0(modelName, { user_id: userId })
+            : google(modelName);
 
         const result = streamText({
             model,
